@@ -8,7 +8,7 @@ const tokens = (n) => {
 
 const wait = (second) => {
   const milisecond = second * 1000;
-  return new Promise((resolve) => resolve, milisecond);
+  return new Promise((resolve) => setTimeout(resolve), milisecond);
 };
 
 async function main() {
@@ -96,7 +96,7 @@ async function main() {
   await transaction.wait();
   console.log(`order cancel by ${user1.address}`);
 
- 
+ await wait(1);
 
 ///Seed Filled Order
   //user1 make order
@@ -110,7 +110,27 @@ async function main() {
   order_id = result.events[0].args.Order_id;
   transaction = await exchange.connect(user2).fillOrder(order_id);
   await transaction.wait();
-  console.log(`order filled by ${user1.address}`);
+  console.log(`order filled by ${user2.address}`);
+
+ await wait(1);
+
+
+  ///Seed Filled Order
+  //user1 make order
+  transaction = await exchange
+    .connect(user1)
+    .makeOrder(eTIT.address, tokens(90), shery.address, tokens(70));
+  result = await transaction.wait();
+  console.log(`made order by ${user1.address}`);
+
+  //order filled by user2
+  order_id = result.events[0].args.Order_id;
+  transaction = await exchange.connect(user2).fillOrder(order_id);
+  await transaction.wait();
+  console.log(`order filled by ${user2.address}`);
+
+ await wait(1);
+
 
   //////////////////book order
 

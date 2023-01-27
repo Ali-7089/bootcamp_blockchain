@@ -26,7 +26,7 @@ const OrderBook = () => {
         {orderBook && orderBook.sellOrders.map((order , index)=>{
          return( <tr key={index}>
           <td>{ order.token0Amount }</td>
-          <td>{order.tokenPrice}</td>
+          <td style={{color:'blue'}} >{order.tokenPrice}</td>
           <td>{order.token1Amount}</td>
         </tr>)
         })}
@@ -53,7 +53,7 @@ const OrderBook = () => {
         {orderBook && orderBook.buyOrders.map((order , index)=>{
          return( <tr key={index}>
           <td>{ order.token0Amount }</td>
-          <td>{order.tokenPrice}</td>
+          <td style={{color:'green'}} >{order.tokenPrice}</td>
           <td>{order.token1Amount}</td>
         </tr>)
         })}

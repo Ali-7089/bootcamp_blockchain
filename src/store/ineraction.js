@@ -88,6 +88,19 @@ export const subscribeToEvent = async (exchange, dispatch) => {
 
 export const LoadAllOrders = async(provider,exchange,dispatch)=>{
   const block = await provider.getBlockNumber();
+
+  //fetch all cancel Orders
+  const cancelOrderStream = await exchange.queryFilter('Cancel',0,block);
+  const cancelOrders = cancelOrderStream.map(events=> events.args)
+
+  dispatch({type:'LOAD_ALL_CANCEL_ORDERS', cancelOrders})
+
+  //fetch all Filled orders 
+  const filedOrderStream = await exchange.queryFilter('FilledOrderEvent',0,block);
+  const fillOrders = filedOrderStream.map(events=> events.args)
+
+  dispatch({type:'LOAD_ALL_FILLED_ORDERS', fillOrders})
+
   //fetch all orders
   const orderStream = await exchange.queryFilter('OrderEvent',0,block);
   const allOrders = orderStream.map(events=> events.args)

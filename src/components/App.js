@@ -16,6 +16,7 @@ import {
   LoadAllOrders
 } from "../store/ineraction";
 import OrderBook from "./OrderBook";
+import Trades from "./Trades";
 
 
 function App() {
@@ -66,9 +67,8 @@ function App() {
           {/* PriceChart */}
 
           {/* Transactions */}
-
-          {/* Trades */}
-
+        
+          <Trades/>
           <OrderBook/>
         </section>
       </main>

@@ -90,6 +90,26 @@ export const exchange = (state =DEFAULT_EXCHANGE_STATE, action) => {
           }
         }
 
+// load all cancel orders 
+        case 'LOAD_ALL_CANCEL_ORDERS':
+          return{
+            ...state,
+            cancelOrders:{
+              loaded:true,
+              data: action.cancelOrders
+            }
+          }
+
+          // load all cancel orders 
+        case 'LOAD_ALL_FILLED_ORDERS':
+          return{
+            ...state,
+            fillOrders:{
+              loaded:true,
+              data: action.fillOrders
+            }
+          }
+
       case 'TOKEN_1_EXCHANGE_BALANCE_LOADED':
         return{
           ...state,
