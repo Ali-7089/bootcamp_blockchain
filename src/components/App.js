@@ -17,6 +17,7 @@ import {
 } from "../store/ineraction";
 import OrderBook from "./OrderBook";
 import Trades from "./Trades";
+import Transaction from "./Transaction";
 
 
 function App() {
@@ -50,7 +51,7 @@ function App() {
 
   useEffect(() => {
     loadBlockchainData();
-  });
+  },[]);
 
   return (
     <div>
@@ -66,7 +67,7 @@ function App() {
         <section className="exchange__section--right grid">
           {/* PriceChart */}
 
-          {/* Transactions */}
+          <Transaction/>
         
           <Trades/>
           <OrderBook/>

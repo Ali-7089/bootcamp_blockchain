@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 const allOrders = state=>get(state , 'exchange.allOrders.data',[])
 const cancelOrder = state=> get(state , 'exchange.cancelOrders.data',[]) 
 const filledOrder = state=> get(state , 'exchange.fillOrders.data',[])
+const account = state => get(state , 'provider.account')
 
 const tokens = state=>get(state , 'tokens.contracts')
 
@@ -21,6 +22,24 @@ const openOrder = (state)=>{
        return (can || fil)
    })
 }
+
+export const myOrderSelector = createSelector(tokens,openOrder,account,(tokens,orders , account)=>{
+  if(!tokens[0] && !tokens[1]){return }
+
+  //filter order according to market search
+  orders = orders.filter(o=>o._tokenGet==tokens[0].address || o._tokenGet == tokens[1].address)
+  orders = orders.filter(o=>o._tokenGive==tokens[0].address || o._tokenGive == tokens[1].address)
+
+  //filter orders 
+   orders = mapOrders(orders , tokens);
+  // console.log(orders)
+   //filter orders according to logged in account
+   orders = orders.filter((o)=>o.user === "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266");
+   orders = orders.sort((a,b)=> b.timestamp - a.timestamp);
+   
+   return orders;
+
+})
 
 const decoracteOrder = (order , tokens)=>{
   let token0Amount , token1Amount;

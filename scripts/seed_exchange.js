@@ -112,26 +112,20 @@ async function main() {
   await transaction.wait();
   console.log(`order filled by ${user2.address}`);
 
- await wait(1);
-
-
-  ///Seed Filled Order
-  //user1 make order
+  //user1 make another order
   transaction = await exchange
     .connect(user1)
-    .makeOrder(eTIT.address, tokens(90), shery.address, tokens(70));
+    .makeOrder(eTIT.address, tokens(19), shery.address, tokens(87));
   result = await transaction.wait();
   console.log(`made order by ${user1.address}`);
 
-  //order filled by user2
+  //another order filled by user2
   order_id = result.events[0].args.Order_id;
   transaction = await exchange.connect(user2).fillOrder(order_id);
   await transaction.wait();
   console.log(`order filled by ${user2.address}`);
 
- await wait(1);
-
-
+  
   //////////////////book order
 
   //user1 make 10 orders
