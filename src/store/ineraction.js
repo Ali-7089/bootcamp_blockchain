@@ -82,6 +82,14 @@ export const subscribeToEvent = async (exchange, dispatch) => {
     const order = event.args;
     dispatch({ type: "NEW_ORDER_SUCCESSFUL", event,order });
   });
+  exchange.on("Cancel", (Order_id,user,tokenGet,amountGet,tokenGive,amountGive,timestamp,event) => {
+    const order = event.args;
+    dispatch({ type: "CANCEL_ORDER_SUCCESSFUL", event,order });
+  });
+  exchange.on("FilledOrderEvent", (Order_id,user,tokenGet,amountGet,tokenGive,amountGive,creator,timestamp,event) => {
+    const order = event.args;
+    dispatch({ type: "FILLED_ORDER_SUCCESSFUL", event,order });
+  });
 };
 
 //Load all orders
@@ -195,3 +203,26 @@ export const makeSellOrder = async (
     dispatch({ type: "NEW_ORDER_FAIL" });
   }
 };
+
+export const cancellingOrder = async(provider , order,dispatch,exchange)=>{
+  dispatch({ type: "CANCEL_ORDER_PENDING" });
+let transaction;
+  try {
+    const signer = await provider.getSigner();
+    transaction = await exchange.connect(signer).cancelOrder(order.Order_id);
+    await transaction.wait();
+  } catch (error) {
+    dispatch({ type: "CANCEL_ORDER_FAIL" });
+  }
+}
+export const filledOrder = async(provider , order,dispatch,exchange)=>{
+  dispatch({ type: "FILLED_ORDER_PENDING" });
+let transaction;
+  try {
+    const signer = await provider.getSigner();
+    transaction = await exchange.connect(signer).fillOrder(order.Order_id);
+    await transaction.wait();
+  } catch (error) {
+    dispatch({ type: "FILLED_ORDER_FAIL" });
+  }
+}

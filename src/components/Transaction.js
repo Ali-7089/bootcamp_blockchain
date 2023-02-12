@@ -1,13 +1,21 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRef , useState} from "react";
 import { myOrderSelector } from "../store/selector";
+import { cancellingOrder } from "../store/ineraction";
 
 const Transaction = () => {
+   const provider = useSelector(state=>state.provider.connection);
+   const dispatch = useDispatch();
+   const exchange = useSelector(state=>state.exchange.exchange)
    const symbols = useSelector(state=>state.tokens.symbols)
    const myOrder = useSelector(myOrderSelector);
    const [showMyOrder , setShowMyOrder] = useState(true);
    const orderRef = useRef(null)
    const tradeRef = useRef(null)
+
+   const cancelHandler = (order)=>{
+      cancellingOrder(provider,order,dispatch,exchange);
+   }
 
    const handleBar = (e)=>{
     if(e.target.className !== orderRef.current.className){
@@ -51,7 +59,7 @@ const Transaction = () => {
          <tr key={index}>
            <td>{order.token0Amount}</td>
            <td>{order.tokenPrice}</td>
-           <td></td>
+           <td  onClick={()=>cancelHandler(order)} ><button className="button--sm">cancel</button></td>
          </tr>
            )
          })}

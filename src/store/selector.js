@@ -16,7 +16,7 @@ const openOrder = (state)=>{
    const fill = filledOrder(state);
 
    return reject(all, (order)=>{
-      const can = cancel.some(o=> o.Order_id.toString()=== order.Order_id);
+      const can = cancel.some(o=> o.Order_id.toString()=== order.Order_id.toString());
       const fil = fill.some(o=> o.Order_id.toString()===order.Order_id.toString());
 
        return (can || fil)

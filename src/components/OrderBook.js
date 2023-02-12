@@ -1,10 +1,19 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import sort from '../assets/assets/sort.svg'
 import {bookOrderSelector} from '../store/selector';
+import { filledOrder } from "../store/ineraction";
 
 const OrderBook = () => {
+    const provider = useSelector(state=>state.provider.connection);
+    const dispatch = useDispatch();
+    const exchange = useSelector(state=>state.exchange.exchange);
     const symbols = useSelector(state=>state.tokens.symbols);
     const orderBook = useSelector(bookOrderSelector);
+
+    const filledOrderHandler= async(order)=>{
+      await filledOrder(provider,order,dispatch,exchange);
+    }
+
     return (
       <div className="component exchange__orderbook">
         <div className='component__header flex-between'>
@@ -51,7 +60,7 @@ const OrderBook = () => {
               </thead>
               <tbody>
         {orderBook && orderBook.buyOrders.map((order , index)=>{
-         return( <tr key={index}>
+         return( <tr key={index} onClick={()=>filledOrderHandler(order)}>
           <td>{ order.token0Amount }</td>
           <td style={{color:'green'}} >{order.tokenPrice}</td>
           <td>{order.token1Amount}</td>
